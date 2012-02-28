@@ -14,7 +14,7 @@ Author URI: http://benmcfadden.com
 add_filter('widget_text', 'do_shortcode');
 
 function easy_icontact_menu() {
-	add_options_page('Easy iConact Options', 'Easy iContact', 'manage_options', 'easyicontact', 'easy_icontact_options_page');
+	add_options_page('Easy iContact Options', 'Easy iContact', 'manage_options', 'easyicontact', 'easy_icontact_options_page');
 }
 add_action('admin_menu', 'easy_icontact_menu');
 
