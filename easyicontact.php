@@ -394,8 +394,7 @@ function easyicontacttag_func( $atts ) {
     if('value' != $label_type){
       $output .= '<label for="fields_email">' . $options['email_label'] . '</label>';
     }
-    $output .= '    
-    <input type="text" name="fields_email" id="fields_email" ';
+    $output .= '<input type="text" name="fields_email" id="fields_email" ';
       
       if(isset($_GET['fields_email'])){
         $output .= 'value="' . $_GET['fields_email'] . '" ';
