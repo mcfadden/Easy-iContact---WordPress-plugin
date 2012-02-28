@@ -30,7 +30,7 @@ function easy_icontact_options_page() {
 <form action="options.php" method="post">
 <?php settings_fields('easy_icontact_options'); ?>
 <?php do_settings_sections('easy_icontact'); ?>
-	 
+	 <h3>Shortcode settings</h3>
 	<input name="Submit" type="submit" value="<?php esc_attr_e('Save Changes'); ?>" />
 	</form>
   <p>Shortcode: [easyicontact]</p>
@@ -49,7 +49,43 @@ function easy_icontact_options_page() {
     <li><strong>submit_text</strong> text - Will show on the submit button if submit_image is false. If submit_image is used, submit_text is used as the alt text for submit_image. Default: &quot;Sign up!&quot;</li>
   </ul>
   <p>Example Shortcode:</p>
-  <pre>[easyicontact confirm_email='0' last_name='0' ]
+  <pre>[easyicontact confirm_email='0' last_name='0' 'submit_text='Sign me up!' label_type='value' ]</pre>
+  <h3>Example CSS</h3>
+  <p>You'll have to add this to your template's CSS file. In future versions, I may enable a custom CSS option, but for now you have to put it in your template's CSS file and edit there.</p>
+  <pre>
+    /* EasyiContact */
+
+/* Wrapper div around the form element */
+div#easyicontact_wrapper{ 
+
+}
+/* Text input fields */
+div#easyicontact_wrapper input[type=text]{
+  background-color: #FFFFFF;
+  border: 1px solid #CCCCCC;
+  width: 140px;
+  height: 15px;
+  color: #000000;
+  padding: 2px;
+}
+/* Text input field that failed validation */
+div#easyicontact_wrapper input.validation-error{
+  border: 1px solid #FF0000;
+}
+/* Text input field with default text (when label_type='value' ) */
+div#easyicontact_wrapper input.default{
+  color: #CCCCCC;
+}
+/* Image submit */
+div#easyicontact_wrapper input.submit-image{
+  background-color: transparent;
+  color: #000000;
+}
+/* Button submit */
+div#easyicontact_wrapper input.submit-button{
+  color: #000000;
+}
+  </pre>
 </div>
 <?php
 }
@@ -354,12 +390,12 @@ function easyicontacttag_func( $atts ) {
         });
         jQuery("#easyicontact input").focus(function(){
           if (jQuery(this).val() == this.defaultValue) {
-            jQuery(this).val(""); 
+            jQuery(this).val("").removeClass("default"); 
           }
         });
         jQuery("#easyicontact input").blur(function(){
           if (jQuery(this).val() == "") {
-            jQuery(this).val(this.defaultValue); 
+            jQuery(this).val(this.defaultValue).addClass("default"); 
           }
         });
         
@@ -377,7 +413,7 @@ function easyicontacttag_func( $atts ) {
       }
       $output .= '<input type="text" name="fields_fname" id="fields_fname" ';
       if('value' == $label_type){
-        $output .= 'value="' . $options['fname_label'] . '" ';
+        $output .= 'class="default" value="' . $options['fname_label'] . '" ';
       }
       $output .= ' />';
     }
@@ -388,7 +424,7 @@ function easyicontacttag_func( $atts ) {
       }
       $output .= '<input type="text" name="fields_lname" id="fields_lname" ';
       if('value' == $label_type){
-        $output .= 'value="' . $options['lname_label'] . '" ';
+        $output .= 'class="default" value="' . $options['lname_label'] . '" ';
       }
       $output .= ' />';
     }
@@ -401,7 +437,7 @@ function easyicontacttag_func( $atts ) {
       if(isset($_GET['fields_email'])){
         $output .= 'value="' . $_GET['fields_email'] . '" ';
       }elseif('value' == $label_type){
-        $output .= 'value="' . $options['email_label'] . '" ';
+        $output .= 'class="default" value="' . $options['email_label'] . '" ';
       }
       
     $output .= '/>';
@@ -412,7 +448,7 @@ function easyicontacttag_func( $atts ) {
       }
       $output .= '<input type="text" name="fields_confirm_email" id="fields_confirm_email" ';
       if('value' == $label_type){
-        $output .= 'value="' . $options['confirm_email_label'] . '" ';
+        $output .= 'class="default" value="' . $options['confirm_email_label'] . '" ';
       }
       $output .= ' />';
     }
