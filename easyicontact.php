@@ -45,7 +45,8 @@ function easy_icontact_options_page() {
     <li><strong>ajax</strong> (1 or 0) default: <em>true (1)</em></li>
     <li><strong>validation</strong> (1 or 0) default: <em>true (1)</em></li>
     <li><strong>label_type</strong> ('label' or 'value') Create HTML labels or insert the lable as the default value of a field. If value is chosen, upon click, the default value is removed. default: <em>&quot;label&quot;</em></li>
-    <li><strong>submit_text</strong> text - Will show on the submit button. Default: &quot;Sign up!&quot;</li>
+    <li><strong>submit_image</strong> path/URL - If set to a value other than false, it will be used as the path/URL to a submit button image. Relative paths are relative from the <a href="http://codex.wordpress.org/Function_Reference/bloginfo" target="_blank">stylesheet_directory</a> (<em><?php bloginfo('stylesheet_directory'); ?></em>). Absolute paths and URLs are used as-is. URLs must begin with "http://" or "https://".  If submit_image is set, submit_text is used as the alt text. Default: <em>false (0)</em></li>
+    <li><strong>submit_text</strong> text - Will show on the submit button if submit_image is false. If submit_image is used, submit_text is used as the alt text for submit_image. Default: &quot;Sign up!&quot;</li>
   </ul>
   <p>Example Shortcode:</p>
   <pre>[easyicontact confirm_email='0' last_name='0' ]
@@ -66,7 +67,7 @@ function easy_icontact_admin_init(){
   add_settings_field('easy_icontact_clientid', 'Client ID', 'easy_icontact_setting_clientid', 'easy_icontact', 'easy_icontact_main');
   add_settings_field('easy_icontact_formid', 'Form ID', 'easy_icontact_setting_formid', 'easy_icontact', 'easy_icontact_main');
   
-  add_settings_section('easy_icontact_fields', 'Field Settings', 'easy_icontact_fields_section', 'easy_icontact');
+  add_settings_section('easy_icontact_fields', 'Field Labels', 'easy_icontact_fields_section', 'easy_icontact');
   add_settings_field('easy_icontact_fields_fname_label', 'First Name:', 'easy_icontact_setting_fields_fname_label', 'easy_icontact', 'easy_icontact_fields');
   add_settings_field('easy_icontact_fields_lname_label', 'Last Name:', 'easy_icontact_setting_fields_lname_label', 'easy_icontact', 'easy_icontact_fields');
   add_settings_field('easy_icontact_fields_email_label', 'Email Address:', 'easy_icontact_setting_fields_email_label', 'easy_icontact', 'easy_icontact_fields');
@@ -264,6 +265,7 @@ function easyicontacttag_func( $atts ) {
     'ajax' => true,
     'validation' => true,
     'label_type' => 'label',
+    'submit_image' => false,
     'submit_text' => "Sign up!"
 	), $atts ) );
   $options = get_option('easy_icontact_options');
@@ -415,9 +417,21 @@ function easyicontacttag_func( $atts ) {
       $output .= ' />';
     }
       
-      $output .= '
-      <input type="hidden" name="easyicontact" value="true" />
-      <input class="submit-button" type="submit" value="' . $submit_text . '" />
+      $output .= '<input type="hidden" name="easyicontact" value="true" />';
+      
+      if(false != (bool)$submit_image){
+        if(false !== stripos($submit_image, 'http://') || false !== stripos($submit_image, 'https://')){ //URL
+          $output .= '<input class="submit-image" type="image" alt="' . $submit_text . '" src="' . $submit_image . '" />';
+        }elseif(0 == strpos($submit_image, '/')){ //Absolute Path
+          $output .= '<input class="submit-image" type="image" alt="' . $submit_text . '" src="' . $submit_image . '" />';
+        }else{ //Relative Path
+          $output .= '<input class="submit-image" type="image" alt="' . $submit_text . '" src="' . get_bloginfo('stylesheet_directory') . '/' . ltrim($submit_image, '/') . '" />';
+        }
+      }else{
+        $output .= '<input class="submit-button" type="submit" value="' . $submit_text . '" />';
+      }
+      
+      $output .='
     </form>
   </div>';
   
