@@ -378,7 +378,7 @@ function easyicontacttag_func( $atts ) {
         /* Ajax submission code here */
          //Submit form
           jQuery.post(
-          "", 
+          "./", 
           jQuery("#easyicontact").serialize() + "&ajax=true",
             function(data){ 
               jQuery("div#easyicontact_wrapper").html(data);
