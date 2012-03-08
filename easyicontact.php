@@ -42,7 +42,7 @@ function easy_icontact_options_page() {
     <li><strong>confirm_email</strong> (1 or 0) default: <em>true (1)</em></li>
     <li><strong>first_name</strong> (1 or 0) default: <em>true (1)</em></li>
     <li><strong>last_name</strong> (1 or 0) default: <em>true (1)</em></li>
-    <!--><li><strong>table</strong> put the items in a table (1 or 0) default: <em>true (1)</em> NOTE: Not yet implemented</li>-->
+    <!--<li><strong>table</strong> put the items in a table (1 or 0) default: <em>true (1)</em> NOTE: Not yet implemented</li>-->
     <li><strong>ajax</strong> (1 or 0) default: <em>true (1)</em> NOTE: while this setting is implemented, when not using AJAX to process requests, it may respond a bit strange. This feature may be removed in future versions.</li>
     <li><strong>validation</strong> (1 or 0) default: <em>true (1)</em></li>
     <li><strong>label_type</strong> ('label' or 'value') Create HTML labels or insert the lable as the default value of a field. If value is chosen, upon click, the default value is removed. default: <em>&quot;label&quot;</em></li>
