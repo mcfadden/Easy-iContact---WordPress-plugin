@@ -42,8 +42,8 @@ function easy_icontact_options_page() {
     <li><strong>confirm_email</strong> (1 or 0) default: <em>true (1)</em></li>
     <li><strong>first_name</strong> (1 or 0) default: <em>true (1)</em></li>
     <li><strong>last_name</strong> (1 or 0) default: <em>true (1)</em></li>
-    <li><strong>table</strong> put the items in a table (1 or 0) default: <em>true (1)</em> NOTE: Not yet implemented</li>
-    <li><strong>ajax</strong> (1 or 0) default: <em>true (1)</em></li>
+    <!--><li><strong>table</strong> put the items in a table (1 or 0) default: <em>true (1)</em> NOTE: Not yet implemented</li>-->
+    <li><strong>ajax</strong> (1 or 0) default: <em>true (1)</em> NOTE: while this setting is implemented, when not using AJAX to process requests, it may respond a bit strange. This feature may be removed in future versions.</li>
     <li><strong>validation</strong> (1 or 0) default: <em>true (1)</em></li>
     <li><strong>label_type</strong> ('label' or 'value') Create HTML labels or insert the lable as the default value of a field. If value is chosen, upon click, the default value is removed. default: <em>&quot;label&quot;</em></li>
     <li><strong>submit_image</strong> path/URL - If set to a value other than false, it will be used as the path/URL to a submit button image. Relative paths are relative from the <a href="http://codex.wordpress.org/Function_Reference/bloginfo" target="_blank">stylesheet_directory</a> (<em><?php bloginfo('stylesheet_directory'); ?></em>). Absolute paths and URLs are used as-is. URLs must begin with "http://" or "https://".  If submit_image is set, submit_text is used as the alt text. Default: <em>false (0)</em></li>
