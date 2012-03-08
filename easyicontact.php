@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Easy iContact
-Plugin URI: http://getdownwithup.com
+
 Description: Makes seamless integration with iContact point and click.
 Version: 0.1
 Author: Ben McFadden
@@ -33,6 +33,22 @@ function easy_icontact_options_page() {
 	 
 	<input name="Submit" type="submit" value="<?php esc_attr_e('Save Changes'); ?>" />
 	</form>
+  <p>Shortcode: [easyicontact]</p>
+  <p>Shortcode optons:<br />
+  0 == false<br />
+  1 == true</p>
+  <ul>
+    <li><strong>confirm_email</strong> (1 or 0) default: <em>true (1)</em></li>
+    <li><strong>first_name</strong> (1 or 0) default: <em>true (1)</em></li>
+    <li><strong>last_name</strong> (1 or 0) default: <em>true (1)</em></li>
+    <li><strong>table</strong> put the items in a table (1 or 0) default: <em>true (1)</em> NOTE: Not yet implemented</li>
+    <li><strong>ajax</strong> (1 or 0) default: <em>true (1)</em></li>
+    <li><strong>validation</strong> (1 or 0) default: <em>true (1)</em></li>
+    <li><strong>label_type</strong> ('label' or 'value') Create HTML labels or insert the lable as the default value of a field. If value is chosen, upon click, the default value is removed. default: <em>&quot;label&quot;</em></li>
+    <li><strong>submit_text</strong> text - Will show on the submit button. Default: &quot;Sign up!&quot;</li>
+  </ul>
+  <p>Example Shortcode:</p>
+  <pre>[easyicontact confirm_email='0' last_name='0' ]
 </div>
 <?php
 }
@@ -42,15 +58,23 @@ function easy_icontact_admin_init(){
   wp_enqueue_script('jquery');
 
   register_setting( 'easy_icontact_options', 'easy_icontact_options', 'easy_icontact_options_validate' );
+  
   add_settings_section('easy_icontact_main', 'iContact Account Settings', 'easy_icontact_section_text', 'easy_icontact');
   add_settings_field('easy_icontact_listid', 'List ID', 'easy_icontact_setting_listid', 'easy_icontact', 'easy_icontact_main');
   add_settings_field('easy_icontact_specialid', 'Special ID<br />(Should be the same as ListID)', 'easy_icontact_setting_specialid', 'easy_icontact', 'easy_icontact_main');
   add_settings_field('easy_icontact_specialidvalue', 'Special ID Value', 'easy_icontact_setting_specialidvalue', 'easy_icontact', 'easy_icontact_main');
   add_settings_field('easy_icontact_clientid', 'Client ID', 'easy_icontact_setting_clientid', 'easy_icontact', 'easy_icontact_main');
   add_settings_field('easy_icontact_formid', 'Form ID', 'easy_icontact_setting_formid', 'easy_icontact', 'easy_icontact_main');
+  
+  add_settings_section('easy_icontact_fields', 'Field Settings', 'easy_icontact_fields_section', 'easy_icontact');
+  add_settings_field('easy_icontact_fields_email_label', 'Email Address:', 'easy_icontact_setting_fields_email_label', 'easy_icontact', 'easy_icontact_fields');
+  add_settings_field('easy_icontact_fields_confirm_email_label', 'Confirm Email Address:', 'easy_icontact_setting_fields_confirm_email_label', 'easy_icontact', 'easy_icontact_fields');
+  add_settings_field('easy_icontact_fields_fname_label', 'First Name:', 'easy_icontact_setting_fields_fname_label', 'easy_icontact', 'easy_icontact_fields');
+  add_settings_field('easy_icontact_fields_lname_label', 'Last Name:', 'easy_icontact_setting_fields_lname_label', 'easy_icontact', 'easy_icontact_fields');
+  
   add_settings_section('easy_icontact_messages', 'Response Messages', 'easy_icontact_response_section', 'easy_icontact');
   add_settings_field('easy_icontact_success_message', 'Success Message (HTML)', 'easy_icontact_setting_success_message', 'easy_icontact', 'easy_icontact_messages');
-  add_settings_field('easy_icontact_error_message', 'error Message (HTML)', 'easy_icontact_setting_error_message', 'easy_icontact', 'easy_icontact_messages');
+  add_settings_field('easy_icontact_error_message', 'Error Message (HTML)', 'easy_icontact_setting_error_message', 'easy_icontact', 'easy_icontact_messages');
 }
 
 function easy_icontact_section_text() {
@@ -156,6 +180,40 @@ function easy_icontact_setting_formid(){
   echo "<input id='easy_icontact_formid' name='easy_icontact_options[formid]' size='40' type='text' value='" . $options['formid'] . "' />";
 }
 
+function easy_icontact_fields_section(){
+  ?>
+    <p>Enter the text you would like to use to identify the fields.</p>
+  <?php
+}
+function easy_icontact_setting_fields_email_label(){
+  $options = get_option('easy_icontact_options');
+  if(!isset($options['email_label']) || empty($options['email_label'])){
+    $options['email_label'] = "Email Address";
+  }
+  echo "<input id='easy_icontact_fields_email_label' name='easy_icontact_options[email_label]' size='40' type='text' value='" . $options['email_label'] . "' />";
+}
+function easy_icontact_setting_fields_confirm_email_label(){
+  $options = get_option('easy_icontact_options');
+  if(!isset($options['confirm_email_label']) || empty($options['confirm_email_label'])){
+    $options['confirm_email_label'] = "Comfirm Email Address";
+  }
+  echo "<input id='easy_icontact_fields_confirm_email_label' name='easy_icontact_options[confirm_email_label]' size='40' type='text' value='" . $options['confirm_email_label'] . "' />";
+}
+function easy_icontact_setting_fields_fname_label(){
+  $options = get_option('easy_icontact_options');
+  if(!isset($options['fname_label']) || empty($options['fname_label'])){
+    $options['fname_label'] = "First Name";
+  }
+  echo "<input id='easy_icontact_fields_fname_label' name='easy_icontact_options[fname_label]' size='40' type='text' value='" . $options['fname_label'] . "' />";
+}
+function easy_icontact_setting_fields_lname_label(){
+  $options = get_option('easy_icontact_options');
+  if(!isset($options['lname_label']) || empty($options['lname_label'])){
+    $options['lname_label'] = "Last Name";
+  }
+  echo "<input id='easy_icontact_fields_lname_label' name='easy_icontact_options[lname_label]' size='40' type='text' value='" . $options['lname_label'] . "' />";
+}
+
 function easy_icontact_response_section(){
   ?>
     <p>Enter the response HTML you would like displayed.</p>
@@ -165,7 +223,7 @@ function easy_icontact_response_section(){
 function easy_icontact_setting_success_message(){
   $options = get_option('easy_icontact_options');
   if(!isset($options['success_message']) || empty($options['success_message'])){
-    $options['success_message'] = "<h2>Thank you!</h2>\n<p>You have successfully signed up to receive email update</p>";
+    $options['success_message'] = "<h2>Thank you!</h2>\n<p>You have successfully signed up to receive email updates</p>";
   }
   echo "<textarea id='easy_icontact_success_message' name='easy_icontact_options[success_message]' cols='80' rows='5' type='text'>" . $options['success_message'] . "</textarea>";
 }
@@ -184,6 +242,10 @@ function easy_icontact_options_validate($input) {
   $newinput['specialidvalue'] = trim($input['specialidvalue']);
   $newinput['clientid'] = trim($input['clientid']);
   $newinput['formid'] = trim($input['formid']);
+  $newinput['email_label'] = trim($input['email_label']);
+  $newinput['confirm_email_label'] = trim($input['confirm_email_label']);
+  $newinput['fname_label'] = trim($input['fname_label']);
+  $newinput['lname_label'] = trim($input['lname_label']);
   $newinput['success_message'] = trim($input['success_message']);
   $newinput['error_message'] = trim($input['error_message']);
   /*if(!preg_match('/^[a-z0-9]{32}$/i', $newinput['text_string'])) {
@@ -198,15 +260,16 @@ function easyicontacttag_func( $atts ) {
     'confirm_email' => true,
     'first_name' => true,
     'last_name' => true,
-    'table' => true,
+    'table' => true, //not yet implemented
     'ajax' => true,
     'validation' => true,
+    'label_type' => 'label',
     'submit_text' => "Sign up!"
 	), $atts ) );
-  //$options = get_option('easy_icontact_options');
+  $options = get_option('easy_icontact_options');
   
   $output = '';
-  
+  //$output .= print_r($options, true); //DEBUG
   if(true == (bool)$validation || true == (bool)$ajax){
     global $add_jquery;
     $add_jquery = true;
@@ -287,42 +350,71 @@ function easyicontacttag_func( $atts ) {
     }
     $output .= '
         });
+        jQuery("#easyicontact input").focus(function(){
+          if (jQuery(this).val() == this.defaultValue) {
+            jQuery(this).val(""); 
+          }
+        });
+        jQuery("#easyicontact input").blur(function(){
+          if (jQuery(this).val() == "") {
+            jQuery(this).val(this.defaultValue); 
+          }
+        });
+        
+        
       });
     </script>';
   }
   
   $output .= '
   <div id="easyicontact_wrapper">
-    <form name="easyicontact" id="easyicontact" method="POST" action="" />
-      <label for="fields_email">Email Address</label>
-      <input type="text" name="fields_email" id="fields_email" ';
+    <form name="easyicontact" id="easyicontact" method="POST" action="" />';
+    
+    if('value' != $label_type){
+      $output .= '<label for="fields_email">' . $options['email_label'] . '</label>';
+    }
+    $output .= '    
+    <input type="text" name="fields_email" id="fields_email" ';
       
       if(isset($_GET['fields_email'])){
         $output .= 'value="' . $_GET['fields_email'] . '" ';
+      }elseif('value' == $label_type){
+        $output .= 'value="' . $options['email_label'] . '" ';
       }
       
-      $output .= '/>
-      ';
+      $output .= '/>';
       
       if(true == (bool)$confirm_email){
-        $output .= '
-          <label for="fields_confirm_email">Comfirm Email</label>
-          <input type="text" name="fields_confirm_email" id="fields_confirm_email" />
-        ';
+        if('value' != $label_type){
+          $output .= '<label for="fields_confirm_email">' . $options['confirm_email_label'] . '</label>';
+        }
+        $output .= '<input type="text" name="fields_confirm_email" id="fields_confirm_email" ';
+        if('value' == $label_type){
+          $output .= 'value="' . $options['confirm_email_label'] . '" ';
+        }
+        $output .= ' />';
       }
       
       if(true == (bool)$first_name){
-        $output .= '
-          <label for="fields_fname">First Name</label>
-          <input type="text" name="fields_fname" id="fields_fname" />
-        ';
+        if('value' != $label_type){
+          $output .= '<label for="fields_fname">' . $options['fname_label'] . '</label>';
+        }
+        $output .= '<input type="text" name="fields_fname" id="fields_fname" ';
+        if('value' == $label_type){
+          $output .= 'value="' . $options['fname_label'] . '" ';
+        }
+        $output .= ' />';
       }
       
       if(true == (bool)$last_name){
-        $output .= '
-          <label for="fields_lname">Last Name</label>
-          <input type="text" name="fields_lname" id="fields_lname" />
-        ';
+        if('value' != $label_type){
+          $output .= '<label for="fields_lname">' . $options['lname_label'] . '</label>';
+        }
+        $output .= '<input type="text" name="fields_lname" id="fields_lname" ';
+        if('value' == $label_type){
+          $output .= 'value="' . $options['lname_label'] . '" ';
+        }
+        $output .= ' />';
       }
       
       $output .= '
