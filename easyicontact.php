@@ -3,7 +3,7 @@
 Plugin Name: Easy iContact
 
 Description: Makes seamless integration with iContact point and click.
-Version: 0.2
+Version: 0.2.1
 Author: Ben McFadden
 Author URI: http://benmcfadden.com
 URI: https://github.com/mcfadden/Easy-iContact---WordPress-plugin
@@ -325,7 +325,7 @@ function easyicontacttag_func( $atts ) {
       ';
 
       $output .= '
-      if(jQuery("input#fields_email").val() == \'\'){
+      if(jQuery("input#fields_email").val() == \'\' || jQuery("input#fields_email").val() == jQuery("input#fields_email")[0].defaultValue ){
         jQuery("input#fields_email").addClass("validation-error");
         error = true;
       }else{
@@ -346,7 +346,7 @@ function easyicontacttag_func( $atts ) {
       
       if(true == (bool)$first_name){
         $output .= '
-        if(jQuery("input#fields_fname").val() == \'\'){
+        if(jQuery("input#fields_fname").val() == \'\' || jQuery("input#fields_fname").val() == jQuery("input#fields_fname")[0].defaultValue ){
           jQuery("input#fields_fname").addClass("validation-error");
           error = true;
         }else{
@@ -357,7 +357,7 @@ function easyicontacttag_func( $atts ) {
       
       if(true == (bool)$last_name){
         $output .= '
-        if(jQuery("input#fields_lname").val() == \'\'){
+        if(jQuery("input#fields_lname").val() == \'\' || jQuery("input#fields_lname").val() == jQuery("input#fields_lname")[0].defaultValue ){
           jQuery("input#fields_lname").addClass("validation-error");
           error = true;
         }else{
