@@ -3,7 +3,7 @@ Contributors: benmcfadden
 Tags: iContact
 Requires at least: 3.0
 Tested up to: 3.3.1
-Stable tag: 0.2
+Stable tag: 0.3
 
 Easy iContact allows point-and-click (and paste the shortcode) integration with iContact
 
@@ -16,6 +16,26 @@ Since this is an early beta release, although it has shown to be functional in m
 At the moment, installation and use instructions are sparse, but they are coming.
 
 Note: You need an [iContact](http://icontact.com/ "iContact") account to utilize this plugin. They do have a [free trial](http://icontact.com/pricing "iContact pricing"), and a micro plan that is always [free](https://www.icontact.com/email-marketing-free-solution "Free iContact plan").
+
+= Shortcode Options =
+Shortcode: `[easyicontact]`
+__Shortcode optons:__
+0 == false
+1 == true
+
+
+* __confirm_email__  (1 or 0) default: _true (1)_
+* __first_name__ (1 or 0) default: _true (1)_
+* __last_name__ (1 or 0) default: _true (1)_
+* __validation__ (1 or 0) default: _true (1)_
+* __label_type__ ('label' or 'value') Create HTML labels or insert the lable as the default value of a field. If value is chosen, upon click, the default value is removed. default: _label_
+* __submit_image__ path/URL - If set to a value other than false, it will be used as the path/URL to a submit button image. Relative paths are relative from the [stylesheet_directory](http://codex.wordpress.org/Function_Reference/bloginfo, "Codex: bloginfo"). Absolute paths and URLs are used as-is. URLs must begin with "http://" or "https://".  If submit_image is set, submit_text is used as the alt text. Default: _false (0)_
+* __submit_text__ text - Will show on the submit button if submit_image is false. If submit_image is used, submit_text is used as the alt text for submit_image. Default: _Sign up!_
+* __callback_function__ function name - This JavaScript function will be called upon successful submit of the form. It is called immediately after the success message is displayed. Checks to make sure the function is defined.
+
+**Example Shortcode:**
+`[easyicontact confirm_email='0' last_name='0' 'submit_text='Sign me up!' label_type='value' ]`
+
 
 = Why use this plugin? =
 When using the code as it comes from iContact, the user is directed away from your website. This allows you to have 100% control over the visual feeling and messaging the user sees. Also, by using asynchronous form submission, the process is quick and seamless to the end user.
@@ -47,6 +67,7 @@ Visit [https://github.com/mcfadden/Easy-iContact---WordPress-plugin/issues](http
 * Enhancement: When a form submission has failed validation, when the user clicks into a field the validation-error class is now removed.
 * Readme: Updated Installation title so it appears under the correct tab on the WordPress plugin page.
 * Readme: Updated instructions for reporting issues
+* Readme: Added shortcode options to Description tab
 
 = 0.2 =
 * Added to the WordPress plugin directory
