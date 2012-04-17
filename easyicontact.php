@@ -3,7 +3,7 @@
 Plugin Name: Easy iContact
 
 Description: Makes seamless integration with iContact point and click.
-Version: 0.2.1
+Version: 0.3
 Author: Ben McFadden
 Author URI: http://benmcfadden.com
 URI: https://github.com/mcfadden/Easy-iContact---WordPress-plugin
