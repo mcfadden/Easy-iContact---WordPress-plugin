@@ -393,6 +393,7 @@ function easyicontacttag_func( $atts ) {
           if (jQuery(this).val() == this.defaultValue) {
             jQuery(this).val("").removeClass("default"); 
           }
+		  jQuery(this).removeClass("validation-error");
         });
         jQuery("#easyicontact input[type=text]").blur(function(){
           if (jQuery(this).val() == "") {
