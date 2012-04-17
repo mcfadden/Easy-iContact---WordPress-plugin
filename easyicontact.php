@@ -389,12 +389,12 @@ function easyicontacttag_func( $atts ) {
     }
     $output .= '
         });
-        jQuery("#easyicontact input").focus(function(){
+        jQuery("#easyicontact input[type=text]").focus(function(){
           if (jQuery(this).val() == this.defaultValue) {
             jQuery(this).val("").removeClass("default"); 
           }
         });
-        jQuery("#easyicontact input").blur(function(){
+        jQuery("#easyicontact input[type=text]").blur(function(){
           if (jQuery(this).val() == "") {
             jQuery(this).val(this.defaultValue).addClass("default"); 
           }
