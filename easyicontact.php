@@ -31,9 +31,9 @@ function easy_icontact_options_page() {
 <form action="options.php" method="post">
 <?php settings_fields('easy_icontact_options'); ?>
 <?php do_settings_sections('easy_icontact'); ?>
-	 <h3>Shortcode settings</h3>
 	<input name="Submit" type="submit" value="<?php esc_attr_e('Save Changes'); ?>" />
 	</form>
+<h3>Shortcode settings</h3>
   <p>Shortcode: [easyicontact]</p>
   <p>Shortcode optons:<br />
   0 == false<br />
