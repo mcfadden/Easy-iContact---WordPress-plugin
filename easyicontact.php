@@ -303,7 +303,8 @@ function easyicontacttag_func( $atts ) {
     'validation' => true,
     'label_type' => 'label',
     'submit_image' => false,
-    'submit_text' => "Sign up!"
+    'submit_text' => "Sign up!",
+	'callback_function' => false
 	), $atts ) );
   $options = get_option('easy_icontact_options');
   
@@ -377,13 +378,22 @@ function easyicontacttag_func( $atts ) {
       $output .= '
         /* Ajax submission code here */
          //Submit form
-          jQuery.post(
-          "./", 
-          jQuery("#easyicontact").serialize() + "&ajax=true",
-            function(data){ 
-              jQuery("div#easyicontact_wrapper").html(data);
-            } 
-          );
+         jQuery.post(
+         "./", 
+         jQuery("#easyicontact").serialize() + "&ajax=true",
+           function(data){ 
+             jQuery("div#easyicontact_wrapper").html(data);';
+             if(false != $callback_function){
+               $callback_function = rtrim($callback_function, "(); ") . '()';
+               $output .= '
+               if(window.' . $callback_function . '){
+                 ' . $callback_function . ';
+               }
+               ';
+             }
+   	$output .= '	  
+           } 
+         );
         return false;
       ';
     }
