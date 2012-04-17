@@ -48,7 +48,7 @@ function easy_icontact_options_page() {
     <li><strong>label_type</strong> ('label' or 'value') Create HTML labels or insert the lable as the default value of a field. If value is chosen, upon click, the default value is removed. default: <em>&quot;label&quot;</em></li>
     <li><strong>submit_image</strong> path/URL - If set to a value other than false, it will be used as the path/URL to a submit button image. Relative paths are relative from the <a href="http://codex.wordpress.org/Function_Reference/bloginfo" target="_blank">stylesheet_directory</a> (<em><?php bloginfo('stylesheet_directory'); ?></em>). Absolute paths and URLs are used as-is. URLs must begin with "http://" or "https://".  If submit_image is set, submit_text is used as the alt text. Default: <em>false (0)</em></li>
     <li><strong>submit_text</strong> text - Will show on the submit button if submit_image is false. If submit_image is used, submit_text is used as the alt text for submit_image. Default: &quot;Sign up!&quot;</li>
-	<li><strong>callback_attribute</strong> function name - This JavaScript function will be called upon successful submit of the form. It is called immediately after the success message is displayed. Checks to make sure the function is defined.</li>
+	<li><strong>callback_function</strong> function name - This JavaScript function will be called upon successful submit of the form. It is called immediately after the success message is displayed. Checks to make sure the function is defined.</li>
   </ul>
   <p>Example Shortcode:</p>
   <pre>[easyicontact confirm_email='0' last_name='0' 'submit_text='Sign me up!' label_type='value' ]</pre>
