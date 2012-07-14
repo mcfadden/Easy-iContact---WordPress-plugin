@@ -306,9 +306,25 @@ function easyicontacttag_func( $atts ) {
     'submit_image' => false,
     'submit_text' => "Sign up!",
 	  'callback_function' => false,
-    'custom_fields' => null
+    'custom_fields' => null,
+    'wrapper_div' => false
 	), $atts ) );
   $options = get_option('easy_icontact_options');
+  
+  global $config;
+  $config['label_type'] = $label_type;
+  $config['confirm_email'] = $confirm_email;
+  $config['first_name'] = $first_name;
+  $config['last_name'] = $last_name;
+  $config['table'] = $table;
+  $config['ajax'] = $ajax;
+  $config['validation'] = $validation;
+  $config['label_type'] = $label_type;
+  $config['submit_image'] = $submit_image;
+  $config['submit_text'] = $submit_text;
+  $config['callback_function'] = $callback_function;
+  $config['custom_fields'] = $custom_fields;
+  $config['wrapper_div'] = $wrapper_div;
 
   $output = '';
   //$output .= print_r($options, true); //DEBUG
@@ -418,53 +434,29 @@ function easyicontacttag_func( $atts ) {
     </script>';
   }
 
+
   $output .= '
   <div id="easyicontact_wrapper">
     <form name="easyicontact" id="easyicontact" method="POST" action="" />';
     if(true == (bool)$first_name){
-      if('value' != $label_type){
-        $output .= '<label for="fields_fname">' . $options['fname_label'] . '</label>';
-      }
-      $output .= '<input type="text" name="fields_fname" id="fields_fname" ';
-      if('value' == $label_type){
-        $output .= 'class="default" value="' . $options['fname_label'] . '" ';
-      }
-      $output .= ' />';
+      $output .= default_field("fname", $options['fname_label']);
     }
 
     if(true == (bool)$last_name){
-      if('value' != $label_type){
-        $output .= '<label for="fields_lname">' . $options['lname_label'] . '</label>';
-      }
-      $output .= '<input type="text" name="fields_lname" id="fields_lname" ';
-      if('value' == $label_type){
-        $output .= 'class="default" value="' . $options['lname_label'] . '" ';
-      }
-      $output .= ' />';
+      $output .= default_field("lname", $options['lname_label']);
     }
 
-    if('value' != $label_type){
-      $output .= '<label for="fields_email">' . $options['email_label'] . '</label>';
-    }
-    $output .= '<input type="text" name="fields_email" id="fields_email" ';
-
-      if(isset($_GET['fields_email'])){
+      $output .= default_field("email", $options['email_label']);
+    
+    /*  if(isset($_GET['fields_email'])){
         $output .= 'value="' . $_GET['fields_email'] . '" ';
       }elseif('value' == $label_type){
         $output .= 'class="default" value="' . $options['email_label'] . '" ';
       }
-
-    $output .= '/>';
-
+      */
+      
     if(true == (bool)$confirm_email){
-      if('value' != $label_type){
-        $output .= '<label for="fields_confirm_email">' . $options['confirm_email_label'] . '</label>';
-      }
-      $output .= '<input type="text" name="fields_confirm_email" id="fields_confirm_email" ';
-      if('value' == $label_type){
-        $output .= 'class="default" value="' . $options['confirm_email_label'] . '" ';
-      }
-      $output .= ' />';
+      $output .= default_field("confirm_email", $options['confirm_email_label']);
     }
 
     if($custom_field_data = json_decode($custom_fields)){
@@ -544,6 +536,26 @@ function easyicontacttag_func( $atts ) {
 }
 add_shortcode( 'easyicontact', 'easyicontacttag_func' );
 
+function default_field($field, $label){
+  $this_output = "";
+  global $config;
+  if($config['wrapper_div']){
+    $this_output .= '<div id="fields_' . $field . '_wrapper" class="field_wrapper">';
+  }
+  if('value' != $config['label_type']){
+    $this_output .= '<label for="fields_' . $field . '">' . $label . '</label>';
+  }
+  $this_output .= '<input type="text" name="fields_' . $field . '" id="fields_' . $field . '" ';
+  if('value' == $config['label_type']){
+    $this_output .= 'class="default" value="' . $label . '" ';
+  }
+  $this_output .= ' />';
+  if($config['wrapper_div']){
+    $this_output .= '</div>';
+  }
+  return $this_output;
+}
+
 /* FAILED attempte to load jQuery in the footer
 add_action('wp_footer', 'print_my_script');
 function print_my_script() {
@@ -601,6 +613,3 @@ function easyicontact_process_request(){
     exit();
   }
 }
-
-
-?>
