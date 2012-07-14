@@ -447,13 +447,6 @@ function easyicontacttag_func( $atts ) {
     }
 
       $output .= default_field("email", $options['email_label']);
-    
-    /*  if(isset($_GET['fields_email'])){
-        $output .= 'value="' . $_GET['fields_email'] . '" ';
-      }elseif('value' == $label_type){
-        $output .= 'class="default" value="' . $options['email_label'] . '" ';
-      }
-      */
       
     if(true == (bool)$confirm_email){
       $output .= default_field("confirm_email", $options['confirm_email_label']);
@@ -546,8 +539,10 @@ function default_field($field, $label){
     $this_output .= '<label for="fields_' . $field . '">' . $label . '</label>';
   }
   $this_output .= '<input type="text" name="fields_' . $field . '" id="fields_' . $field . '" ';
-  if('value' == $config['label_type']){
-    $this_output .= 'class="default" value="' . $label . '" ';
+  if(isset($_GET['fields_' . $field])){
+    $this_output .= 'value="' . $_GET['fields_' . $field] . '"';
+  }elseif('value' == $config['label_type']){
+    $this_output .= 'class="default" value="' . $label . '"';
   }
   $this_output .= ' />';
   if($config['wrapper_div']){
