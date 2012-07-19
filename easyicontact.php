@@ -3,7 +3,7 @@
 Plugin Name: Easy iContact
 
 Description: Makes seamless integration with iContact point and click.
-Version: 0.3
+Version: 0.3.1
 Author: Ben McFadden
 Author URI: http://benmcfadden.com
 URI: https://github.com/mcfadden/Easy-iContact---WordPress-plugin
@@ -58,7 +58,7 @@ function easy_icontact_options_page() {
     /* EasyiContact */
 
 /* Wrapper div around the form element */
-div#easyicontact_wrapper{ 
+div#easyicontact_wrapper{
 
 }
 /* Text input fields */
@@ -97,20 +97,20 @@ function easy_icontact_admin_init(){
   wp_enqueue_script('jquery');
 
   register_setting( 'easy_icontact_options', 'easy_icontact_options', 'easy_icontact_options_validate' );
-  
+
   add_settings_section('easy_icontact_main', 'iContact Account Settings', 'easy_icontact_section_text', 'easy_icontact');
   add_settings_field('easy_icontact_listid', 'List ID', 'easy_icontact_setting_listid', 'easy_icontact', 'easy_icontact_main');
   add_settings_field('easy_icontact_specialid', 'Special ID<br />(Should be the same as ListID)', 'easy_icontact_setting_specialid', 'easy_icontact', 'easy_icontact_main');
   add_settings_field('easy_icontact_specialidvalue', 'Special ID Value', 'easy_icontact_setting_specialidvalue', 'easy_icontact', 'easy_icontact_main');
   add_settings_field('easy_icontact_clientid', 'Client ID', 'easy_icontact_setting_clientid', 'easy_icontact', 'easy_icontact_main');
   add_settings_field('easy_icontact_formid', 'Form ID', 'easy_icontact_setting_formid', 'easy_icontact', 'easy_icontact_main');
-  
+
   add_settings_section('easy_icontact_fields', 'Field Labels', 'easy_icontact_fields_section', 'easy_icontact');
   add_settings_field('easy_icontact_fields_fname_label', 'First Name:', 'easy_icontact_setting_fields_fname_label', 'easy_icontact', 'easy_icontact_fields');
   add_settings_field('easy_icontact_fields_lname_label', 'Last Name:', 'easy_icontact_setting_fields_lname_label', 'easy_icontact', 'easy_icontact_fields');
   add_settings_field('easy_icontact_fields_email_label', 'Email Address:', 'easy_icontact_setting_fields_email_label', 'easy_icontact', 'easy_icontact_fields');
   add_settings_field('easy_icontact_fields_confirm_email_label', 'Confirm Email Address:', 'easy_icontact_setting_fields_confirm_email_label', 'easy_icontact', 'easy_icontact_fields');
-  
+
   add_settings_section('easy_icontact_messages', 'Response Messages', 'easy_icontact_response_section', 'easy_icontact');
   add_settings_field('easy_icontact_success_message', 'Success Message (HTML)', 'easy_icontact_setting_success_message', 'easy_icontact', 'easy_icontact_messages');
   add_settings_field('easy_icontact_error_message', 'Error Message (HTML)', 'easy_icontact_setting_error_message', 'easy_icontact', 'easy_icontact_messages');
@@ -121,7 +121,7 @@ function easy_icontact_section_text() {
   <script type="text/javascript">
     function parse_html(){
       html = jQuery('textarea#raw_html').val();
-      
+
       listid = html.split('"listid" value="', 2);
       if(listid == html){
         alert("Error: listid not found in provided HTML");
@@ -132,7 +132,7 @@ function easy_icontact_section_text() {
         return;
       }
       jQuery('input#easy_icontact_listid').val(listid[1].split('">', 1));
-      
+
       specialid = html.split('name="specialid:', 2);
       if(specialid == html){
         alert("Error: specialid not found in provided HTML");
@@ -143,7 +143,7 @@ function easy_icontact_section_text() {
         return;
       }
       jQuery('input#easy_icontact_specialid').val(specialid[1].split('" value="', 1));
-      
+
       specialidvalue = html.split('name="specialid:', 2);
       if(specialidvalue == html){
         alert("Error: specialidvalue not found in provided HTML");
@@ -159,7 +159,7 @@ function easy_icontact_section_text() {
         return;
       }
       jQuery('input#easy_icontact_specialidvalue').val(specialidvalue[1].split('">', 1));
-      
+
       clientid = html.split('"clientid" value="', 2);
       if(clientid == html){
         alert("Error: clientid not found in provided HTML");
@@ -170,7 +170,7 @@ function easy_icontact_section_text() {
         return;
       }
       jQuery('input#easy_icontact_clientid').val(clientid[1].split('">', 1));
-      
+
       formid = html.split('"formid" value="', 2);
       if(formid == html){
         alert("Error: formid not found in provided HTML");
@@ -181,10 +181,10 @@ function easy_icontact_section_text() {
         return;
       }
       jQuery('input#easy_icontact_formid').val(formid[1].split('">', 1));
-      
-      
-      
-      
+
+
+
+
     }
   </script>
   <p>Please enter in the details from your sign-up form, or paste the generated form in the textarea below:</p>
@@ -305,10 +305,32 @@ function easyicontacttag_func( $atts ) {
     'label_type' => 'label',
     'submit_image' => false,
     'submit_text' => "Sign up!",
-	'callback_function' => false
+	  'callback_function' => false,
+    'custom_fields' => null,
+    'wrapper_div' => false,
+    'icontact_listid' => false,
+    'icontact_specialid' => false,
+    'icontact_specialid_value' => false,
+    'icontact_clientid' => false,
+    'icontact_formid' => false
 	), $atts ) );
   $options = get_option('easy_icontact_options');
   
+  global $config;
+  $config['label_type'] = $label_type;
+  $config['confirm_email'] = $confirm_email;
+  $config['first_name'] = $first_name;
+  $config['last_name'] = $last_name;
+  $config['table'] = $table;
+  $config['ajax'] = $ajax;
+  $config['validation'] = $validation;
+  $config['label_type'] = $label_type;
+  $config['submit_image'] = $submit_image;
+  $config['submit_text'] = $submit_text;
+  $config['callback_function'] = $callback_function;
+  $config['custom_fields'] = $custom_fields;
+  $config['wrapper_div'] = $wrapper_div;
+
   $output = '';
   //$output .= print_r($options, true); //DEBUG
   if(true == (bool)$validation || true == (bool)$ajax){
@@ -318,7 +340,7 @@ function easyicontacttag_func( $atts ) {
     <script type="text/javascript" />
       jQuery(document).ready(function(){
         jQuery("form#easyicontact").submit(function(){
-          
+
           ';
     if(true == (bool)$validation){
       $output .= '
@@ -334,7 +356,7 @@ function easyicontacttag_func( $atts ) {
         jQuery("#fields_email").removeClass("validation-error");
       }
       ';
-      
+
       if(true == (bool)$confirm_email){
         $output .= '
         if(jQuery("input#fields_confirm_email").val() == \'\' || jQuery("input#fields_confirm_email").val() != jQuery("input#fields_email").val() ){
@@ -345,7 +367,7 @@ function easyicontacttag_func( $atts ) {
         }
         ';
       }
-      
+
       if(true == (bool)$first_name){
         $output .= '
         if(jQuery("input#fields_fname").val() == \'\' || jQuery("input#fields_fname").val() == jQuery("input#fields_fname")[0].defaultValue ){
@@ -356,7 +378,7 @@ function easyicontacttag_func( $atts ) {
         }
         ';
       }
-      
+
       if(true == (bool)$last_name){
         $output .= '
         if(jQuery("input#fields_lname").val() == \'\' || jQuery("input#fields_lname").val() == jQuery("input#fields_lname")[0].defaultValue ){
@@ -367,22 +389,22 @@ function easyicontacttag_func( $atts ) {
         }
         ';
       }
-      
+
       $output .= '
         if(false != error){
           return false;
         };
       ';
-      
+
     }
     if(true == (bool)$ajax){
       $output .= '
         /* Ajax submission code here */
          //Submit form
          jQuery.post(
-         "./", 
+         "./",
          jQuery("#easyicontact").serialize() + "&ajax=true",
-           function(data){ 
+           function(data){
              jQuery("div#easyicontact_wrapper").html(data);';
              if(false != $callback_function){
                $callback_function = rtrim($callback_function, "(); ") . '()';
@@ -392,8 +414,8 @@ function easyicontacttag_func( $atts ) {
                }
                ';
              }
-   	$output .= '	  
-           } 
+   	$output .= '
+           }
          );
         return false;
       ';
@@ -402,72 +424,101 @@ function easyicontacttag_func( $atts ) {
         });
         jQuery("#easyicontact input[type=text]").focus(function(){
           if (jQuery(this).val() == this.defaultValue) {
-            jQuery(this).val("").removeClass("default"); 
+            jQuery(this).val("").removeClass("default");
           }
 		  jQuery(this).removeClass("validation-error");
         });
         jQuery("#easyicontact input[type=text]").blur(function(){
           if (jQuery(this).val() == "") {
-            jQuery(this).val(this.defaultValue).addClass("default"); 
+            jQuery(this).val(this.defaultValue).addClass("default");
           }
         });
-        
-        
+
+
       });
     </script>';
   }
-  
+
+
   $output .= '
   <div id="easyicontact_wrapper">
     <form name="easyicontact" id="easyicontact" method="POST" action="" />';
     if(true == (bool)$first_name){
-      if('value' != $label_type){
-        $output .= '<label for="fields_fname">' . $options['fname_label'] . '</label>';
-      }
-      $output .= '<input type="text" name="fields_fname" id="fields_fname" ';
-      if('value' == $label_type){
-        $output .= 'class="default" value="' . $options['fname_label'] . '" ';
-      }
-      $output .= ' />';
+      $output .= default_field("fname", $options['fname_label']);
     }
-    
+
     if(true == (bool)$last_name){
-      if('value' != $label_type){
-        $output .= '<label for="fields_lname">' . $options['lname_label'] . '</label>';
-      }
-      $output .= '<input type="text" name="fields_lname" id="fields_lname" ';
-      if('value' == $label_type){
-        $output .= 'class="default" value="' . $options['lname_label'] . '" ';
-      }
-      $output .= ' />';
+      $output .= default_field("lname", $options['lname_label']);
     }
-    
-    if('value' != $label_type){
-      $output .= '<label for="fields_email">' . $options['email_label'] . '</label>';
-    }
-    $output .= '<input type="text" name="fields_email" id="fields_email" ';
-      
-      if(isset($_GET['fields_email'])){
-        $output .= 'value="' . $_GET['fields_email'] . '" ';
-      }elseif('value' == $label_type){
-        $output .= 'class="default" value="' . $options['email_label'] . '" ';
-      }
-      
-    $output .= '/>';
+
+      $output .= default_field("email", $options['email_label']);
       
     if(true == (bool)$confirm_email){
-      if('value' != $label_type){
-        $output .= '<label for="fields_confirm_email">' . $options['confirm_email_label'] . '</label>';
-      }
-      $output .= '<input type="text" name="fields_confirm_email" id="fields_confirm_email" ';
-      if('value' == $label_type){
-        $output .= 'class="default" value="' . $options['confirm_email_label'] . '" ';
-      }
-      $output .= ' />';
+      $output .= default_field("confirm_email", $options['confirm_email_label']);
     }
-      
+
+    if($custom_field_data = json_decode($custom_fields)){
+      $valid_types = array('text','select','checkbox','radio','textarea');
+      foreach($custom_field_data as $custom_field => $params){
+        if(in_array($params->type, $valid_types)){
+          $type = $params->type;
+        }else{
+          $type = "text";
+        }
+        if(in_array($type, array('select','checkbox','radio')) && 0 == count($params->options)){
+          $output .= "<p>ERROR: Must include at least one option</p>";
+        }else{
+          if("text" == $type || "textarea" == $type){
+            if('value' != $label_type && !empty($params->label)){
+              $output .= '<label for="fields_' . $custom_field . '">' . $params->label . '</label>';
+            }
+          }
+          if('text' == $type){
+            $output .= '<input type="text" name="fields_' . $custom_field . '" id="fields_' . $custom_field . '"';
+            if('value' == $label_type){
+              $output .= 'class="default" value="' . $params->label . '" ';
+            }
+            $output .= ' />';
+          }elseif('textarea' == $type){
+            $output .= '<textarea name="fields_' . $custom_field . '" id="fields_' . $custom_field . '">';
+            if('value' == $label_type){
+              $output .= $params->label;
+            }
+            $output .= '</textarea>';
+          }elseif('select' == $type){
+            if(!empty($params->label)){
+              $output .= '<label for="fields_' . $custom_field . '">' . $params->label . '</label>';
+            }
+            $output .= '<select name="fields_' . $custom_field . '" id="fields_' . $custom_field . '">';
+            if("true" == $params->blank){
+              $output .= '<option value=""></option>';
+            }
+            foreach($params->options as $display => $value){
+              if(!empty($value)){
+                $output .= '<option value="' . $value . '">' . $display . '</option>';
+              }else{
+                $output .= '<option value="' . $display . '">' . $display . '</option>';
+              }
+            }
+            $output .= '</select>';
+          }elseif('radio' == $type){
+            $output .= "<p>radio type input is not yet supported. If you would like to contribute, please for this project at github: https://github.com/mcfadden/Easy-iContact---WordPress-plugin</p>";
+          }elseif('checkbox' == $type){
+            $output .= "<p>checkbox type input is not yet supported. If you would like to contribute, please for this project at github: https://github.com/mcfadden/Easy-iContact---WordPress-plugin</p>";
+          }
+        }
+      }
+    }
+
+      if(!empty($icontact_listid)){ $output .= '<input type="hidden" name="listid" value="' . $icontact_listid . '" />'; }
+      if(!empty($icontact_specialid) && !empty($icontact_specialid_value)){ $output .= '<input type="hidden" name="specialid:' . $icontact_specialid . '" value="' . $icontact_specialid_value . '" />'; }
+      if(!empty($icontact_clientid)){ $output .= '<input type="hidden" name="clientid" value="' . $icontact_clientid . '" />'; }
+      if(!empty($icontact_formid)){ $output .= '<input type="hidden" name="formid" value="' . $icontact_formid . '" />'; }
+        
       $output .= '<input type="hidden" name="easyicontact" value="true" />';
       
+      
+
       if(false != (bool)$submit_image){
         if(false !== stripos($submit_image, 'http://') || false !== stripos($submit_image, 'https://')){ //URL
           $output .= '<input class="submit-image" type="image" alt="' . $submit_text . '" src="' . $submit_image . '" />';
@@ -479,24 +530,46 @@ function easyicontacttag_func( $atts ) {
       }else{
         $output .= '<input class="submit-button" type="submit" value="' . $submit_text . '" />';
       }
-      
+
       $output .='
     </form>
   </div>';
-  
+
 
 	return $output;
 }
 add_shortcode( 'easyicontact', 'easyicontacttag_func' );
 
+function default_field($field, $label){
+  $this_output = "";
+  global $config;
+  if($config['wrapper_div']){
+    $this_output .= '<div id="fields_' . $field . '_wrapper" class="field_wrapper">';
+  }
+  if('value' != $config['label_type']){
+    $this_output .= '<label for="fields_' . $field . '">' . $label . '</label>';
+  }
+  $this_output .= '<input type="text" name="fields_' . $field . '" id="fields_' . $field . '" ';
+  if(isset($_GET['fields_' . $field])){
+    $this_output .= 'value="' . $_GET['fields_' . $field] . '"';
+  }elseif('value' == $config['label_type']){
+    $this_output .= 'class="default" value="' . $label . '"';
+  }
+  $this_output .= ' />';
+  if($config['wrapper_div']){
+    $this_output .= '</div>';
+  }
+  return $this_output;
+}
+
 /* FAILED attempte to load jQuery in the footer
 add_action('wp_footer', 'print_my_script');
 function print_my_script() {
 	global $add_jquery;
- 
+
 	if ( ! $add_jquery )
 		return;
- 
+
 	wp_print_scripts('jquery');
 }
 /**/
@@ -511,21 +584,23 @@ add_action('init', 'easyicontact_process_request');
 function easyicontact_process_request(){
   if(true == $_POST['easyicontact']){
     $options = get_option('easy_icontact_options');
-    
+
     $url = "http://app.icontact.com/icp/signup.php";
-    
+
     $post_data = array(
       'source' => $_SERVER['REQUEST_URI'],
-      'listid' => $options['listid'],
-      'specialid:' . $options['specialid'] => $options['specialidvalue'],
-      'clientid' => $options['clientid'],
-      'formid' => $options['formid'],
+      'listid' => (isset($_POST['listid']) ? $_POST['listid'] : $options['listid'] ),
+      'specialid:' . (isset($_POST['specialid']) ? $_POST['specialid'] : $options['specialid'] ) => (isset($_POST['specialidvalue']) ? $_POST['specialidvalue'] : $options['specialidvalue'] ),
+      'clientid' => (isset($_POST['clientid']) ? $_POST['clientid'] : $options['clientid'] ),
+      'formid' => (isset($_POST['formid']) ? $_POST['formid'] : $options['formid'] ),
       'reallistid' => '1',
-      'doubleopt' => '0',
-      'fields_email' => $_POST['fields_email'],
-      'fields_fname' => $_POST['fields_fname'],
-      'fields_lname' => $_POST['fields_lname']
+      'doubleopt' => '0'
     );
+    foreach ($_POST as $key => $value) {
+      if (substr($key, 0, 7) == "fields_") {
+        $post_data[$key] = $value;
+      }
+    }
     $response = wp_remote_post( $url, array(
         'method' => 'POST',
         'timeout' => 5,
@@ -546,6 +621,3 @@ function easyicontact_process_request(){
     exit();
   }
 }
-
-
-?>
