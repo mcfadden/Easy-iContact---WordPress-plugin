@@ -465,6 +465,9 @@ function easyicontacttag_func( $atts ) {
         }else{
           $type = "text";
         }
+        if($wrapper_div){
+          $output .= '<div id="fields_' . $custom_field . '_wrapper" class="field_wrapper">';
+        }
         if(in_array($type, array('select','checkbox','radio')) && 0 == count($params->options)){
           $output .= "<p>ERROR: Must include at least one option</p>";
         }else{
@@ -506,6 +509,9 @@ function easyicontacttag_func( $atts ) {
           }elseif('checkbox' == $type){
             $output .= "<p>checkbox type input is not yet supported. If you would like to contribute, please for this project at github: https://github.com/mcfadden/Easy-iContact---WordPress-plugin</p>";
           }
+        }
+        if($wrapper_div){
+          $output .= '</div>';
         }
       }
     }
