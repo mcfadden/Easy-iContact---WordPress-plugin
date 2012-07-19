@@ -590,7 +590,7 @@ function easyicontact_process_request(){
     $post_data = array(
       'source' => $_SERVER['REQUEST_URI'],
       'listid' => (isset($_POST['listid']) ? $_POST['listid'] : $options['listid'] ),
-      'specialid:' . (isset($_POST['specialid']) ? $_POST['specialid'] : $options['specialid'] ) => (isset($_POST['specialidvalue']) ? $_POST['specialidvalue'] : $options['specialidvalue'] ),
+      'specialid:' . (isset($_POST['specialid']) ? $_POST['specialid'] : $options['specialid'] ) => (isset($_POST['specialid_value']) ? $_POST['specialid_value'] : $options['specialid_value'] ),
       'clientid' => (isset($_POST['clientid']) ? $_POST['clientid'] : $options['clientid'] ),
       'formid' => (isset($_POST['formid']) ? $_POST['formid'] : $options['formid'] ),
       'reallistid' => '1',
