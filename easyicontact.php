@@ -307,7 +307,12 @@ function easyicontacttag_func( $atts ) {
     'submit_text' => "Sign up!",
 	  'callback_function' => false,
     'custom_fields' => null,
-    'wrapper_div' => false
+    'wrapper_div' => false,
+    'icontact_listid' => false,
+    'icontact_specialid' => false,
+    'icontact_specialid_value' => false,
+    'icontact_clientid' => false,
+    'icontact_formid' => false
 	), $atts ) );
   $options = get_option('easy_icontact_options');
   
@@ -505,8 +510,14 @@ function easyicontacttag_func( $atts ) {
       }
     }
 
-
+      if(!empty($icontact_listid)){ $output .= '<input type="hidden" name="listid" value="' . $icontact_listid . '" />'; }
+      if(!empty($icontact_specialid) && !empty($icontact_specialid_value)){ $output .= '<input type="hidden" name="specialid:' . $icontact_specialid . '" value="' . $icontact_specialid_value . '" />'; }
+      if(!empty($icontact_clientid)){ $output .= '<input type="hidden" name="clientid" value="' . $icontact_clientid . '" />'; }
+      if(!empty($icontact_formid)){ $output .= '<input type="hidden" name="formid" value="' . $icontact_formid . '" />'; }
+        
       $output .= '<input type="hidden" name="easyicontact" value="true" />';
+      
+      
 
       if(false != (bool)$submit_image){
         if(false !== stripos($submit_image, 'http://') || false !== stripos($submit_image, 'https://')){ //URL
@@ -578,16 +589,18 @@ function easyicontact_process_request(){
 
     $post_data = array(
       'source' => $_SERVER['REQUEST_URI'],
-      'listid' => $options['listid'],
-      'specialid:' . $options['specialid'] => $options['specialidvalue'],
-      'clientid' => $options['clientid'],
-      'formid' => $options['formid'],
+      'listid' => (isset($_POST['listid']) ? $_POST['listid'] : $options['listid'] ),
+      'specialid:' . (isset($_POST['specialid']) ? $_POST['specialid'] : $options['specialid'] ) => (isset($_POST['specialidvalue']) ? $_POST['specialidvalue'] : $options['specialidvalue'] ),
+      'clientid' => (isset($_POST['clientid']) ? $_POST['clientid'] : $options['clientid'] ),
+      'formid' => (isset($_POST['formid']) ? $_POST['formid'] : $options['formid'] ),
       'reallistid' => '1',
-      'doubleopt' => '0',
-      'fields_email' => $_POST['fields_email'],
-      'fields_fname' => $_POST['fields_fname'],
-      'fields_lname' => $_POST['fields_lname']
+      'doubleopt' => '0'
     );
+    foreach ($_POST as $key => $value) {
+      if (substr($key, 0, 7) == "fields_") {
+        $post_data[$key] = $value;
+      }
+    }
     $response = wp_remote_post( $url, array(
         'method' => 'POST',
         'timeout' => 5,
@@ -599,7 +612,7 @@ function easyicontact_process_request(){
         'cookies' => array()
       )
     );
-
+    
     if( is_wp_error( $response ) ) {
       echo $options['error_message'];
     } else {
