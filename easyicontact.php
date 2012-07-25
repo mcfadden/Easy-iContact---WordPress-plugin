@@ -517,7 +517,7 @@ function easyicontacttag_func( $atts ) {
     }
 
       if(!empty($icontact_listid)){ $output .= '<input type="hidden" name="listid" value="' . $icontact_listid . '" />'; }
-      if(!empty($icontact_specialid) && !empty($icontact_specialid_value)){ $output .= '<input type="hidden" name="specialid:' . $icontact_specialid . '" value="' . $icontact_specialid_value . '" />'; }
+      if(!empty($icontact_specialid) && !empty($icontact_specialid_value)){ $output .= '<input type="hidden" name="specialid" value="' . $icontact_specialid . '" /><input type="hidden" name="specialid_value" value="' . $icontact_specialid_value . '" />'; }
       if(!empty($icontact_clientid)){ $output .= '<input type="hidden" name="clientid" value="' . $icontact_clientid . '" />'; }
       if(!empty($icontact_formid)){ $output .= '<input type="hidden" name="formid" value="' . $icontact_formid . '" />'; }
         
