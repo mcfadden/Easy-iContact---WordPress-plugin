@@ -2,8 +2,8 @@
 Contributors: benmcfadden
 Tags: iContact
 Requires at least: 3.0
-Tested up to: 3.3.1
-Stable tag: 0.3
+Tested up to: 3.4.1
+Stable tag: 0.4
 
 Easy iContact allows point-and-click (and paste the shortcode) integration with iContact
 
